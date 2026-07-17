@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: devops-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devopsdb
+    username: devops
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
