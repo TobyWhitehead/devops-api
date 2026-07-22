@@ -6,11 +6,17 @@ import com.tobywhitehead.devopsapi.repository.MessageRepository;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
 public class MessageController {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(MessageController.class);
 
     private final MessageRepository repository;
 
@@ -31,6 +37,13 @@ public class MessageController {
 
     @PostMapping
     public Message createMessage(@Valid @RequestBody Message message) {
-        return repository.save(message);
+
+        logger.info("Creating message: {}", message.getText());
+
+        Message saved = repository.save(message);
+
+        logger.info("Created message with id {}", saved.getId());
+
+        return saved;
     }
 }
