@@ -26,19 +26,33 @@ public class MessageController {
 
     @GetMapping
     public List<Message> getMessages() {
-        return repository.findAll();
+
+        logger.debug("Retrieving all messages");
+
+        List<Message> messages = repository.findAll();
+
+        logger.debug("Retrieved {} messages", messages.size());
+
+        return messages;
     }
 
     @GetMapping("/{id}")
     public Message getMessage(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new MessageNotFoundException("Message not found"));
+
+        logger.debug("Retrieving message with id {}", id);
+
+        Message message = repository.findById(id)
+                .orElseThrow(() -> new MessageNotFoundException("Message with id " + id + " not found"));
+
+        logger.debug("Successfully retrieved message with id {}", id);
+
+        return message;
     }
 
     @PostMapping
     public Message createMessage(@Valid @RequestBody Message message) {
 
-        logger.info("Creating message: {}", message.getText());
+        logger.info("Creating message");
 
         Message saved = repository.save(message);
 

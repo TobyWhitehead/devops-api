@@ -54,3 +54,5 @@ jobs:
             tobywhitehead/devops-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            APP_VERSION=${{ github.sha }}
