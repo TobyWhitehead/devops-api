@@ -61,44 +61,27 @@ devops-api/
 
 # Architecture
 
-```text
-                 Git Push
-                    │
-                    ▼
-            GitHub Repository
-                    │
-                    ▼
-             GitHub Actions
-        ┌───────────┴───────────┐
-        │                       │
-        │                 Run Maven Tests
-        │
-        └───────────────┬───────────────┘
-                        │
-                        ▼
-             Build Docker Image
-                        │
-                        ▼
-            Push Image to Docker Hub
-                        │
-                        ▼
-                 deploy.sh
-                        │
-                        ▼
-             docker compose pull
-                        │
-                        ▼
-              docker compose up -d
-                        │
-         ┌──────────────┴──────────────┐
-         ▼                             ▼
- Spring Boot API              PostgreSQL Container
-         │
-         ▼
- Spring Data JPA
-         │
-         ▼
- PostgreSQL Database
+```mermaid
+flowchart TD
+    subgraph CI["GitHub Actions (CI)"]
+        A[Git Push] --> B[GitHub Repository]
+        B --> C[Run Maven Tests]
+        C --> D[Build Docker Image]
+        D --> E[Push Image to Docker Hub]
+    end
+
+    subgraph Deploy["Deployment"]
+        E --> F[deploy.sh]
+        F --> G[docker compose pull]
+        G --> H[docker compose up -d]
+    end
+
+    subgraph Runtime["Application"]
+        H --> I[Spring Boot API]
+        H --> J[PostgreSQL Container]
+        I --> K[Spring Data JPA]
+        K --> L[PostgreSQL Database]
+    end
 ```
 
 ---
